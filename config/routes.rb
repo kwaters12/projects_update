@@ -4,6 +4,7 @@ Projects::Application.routes.draw do
     get :favorites, on: :collection
   end
   resources :discussions do
+    get :like, on: :member
     post :flag, on: :member
   end
   # The priority is based upon order of creation: first created -> highest priority.

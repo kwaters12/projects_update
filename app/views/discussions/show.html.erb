@@ -1,4 +1,11 @@
 <h1><%= @discussion.title %></h1>
 <p><%= @discussion.body %></p>
 <br>
+<p>Likes: <%= @discussion.like_counter %></p>
+<p>Hit Count: <%= @discussion.hit_count %></p>
+<% if session[:discussion_ids].present? && session[:discussion_ids].include?(@discussion.id) %>
+  <%= link_to "Liked", "javascript:void(0)", disabled: "disabled", class: "btn btn-primary" %>
+<% else %>
+<%= link_to "Like", like_discussion_path(@discussion), class: "btn btn-primary" %>
+<% end %>
 <%= link_to "All Discussions", discussions_path, class: "btn btn-primary" %>

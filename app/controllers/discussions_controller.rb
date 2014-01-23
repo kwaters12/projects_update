@@ -1,5 +1,5 @@
 class DiscussionsController < ApplicationController
-  before_action :set_discussion, only: [:flag]
+  before_action :set_discussion, only: [:flag, :show, :edit, :update, :like]
   
   def index
     @discussions = Discussion.recent
@@ -7,10 +7,11 @@ class DiscussionsController < ApplicationController
 
   def show
     @discussion = Discussion.find(params[:id])
+    @discussion.hit_count += 1
+    @discussion.save
   end
 
   def edit
-    @discussion = Discussion.find(params[:id])
   end
 
   def new
@@ -39,12 +40,32 @@ class DiscussionsController < ApplicationController
     redirect_to discussions_path
   end
 
+  def like
+
+    session[:discussion_ids] ||= []
+
+    if session[:discussion_ids].include? params[:id].to_i
+      redirect_to @discussion, alert: "Liked already"
+    else
+      session[:discussion_ids] << @discussion.id
+      @discussion.like_counter += 1
+      @discussion.save
+      redirect_to @discussion, notice: "T. Hanks for liking!"
+    
+    end
+    
+  end
+
   # Build a custom action for discussions controller 
   # with “post” called “flag” and requires an id to be 
   # passed
   def flag
     @discussion = Discussion.find(params[:id])
     @discussion.save
+  end
+
+  def set_discussion
+    @discussion = Discussion.find(params[:id])
   end
 
 end
