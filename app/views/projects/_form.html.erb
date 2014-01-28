@@ -21,10 +21,18 @@
         <% end %>
 
 	<div class="form-group">
-	<%= f.label :body, "Project Description" %>
-	<%= f.text_area :body, class: "form-control" %>
-	<br>
-    </div>
+		<%= f.label :body, "Project Description" %>
+		<%= f.text_area :body, class: "form-control" %>
+		<br>
+   </div>
+   <ul>
+   	<% Category.all.each do |category| %>
+   		<li>
+   			<%= hidden_field_tag "project[category_ids][]", nil %>
+   			<%= check_box_tag "project[category_ids][]", category.id, @project.categories.include?(category), id: dom_id(category) %>
+   			<%= label_tag dom_id(category), category.name %>
+   		</li>
+   	<% end %>
 
 	<%= f.submit "Submit", class: "btn btn-primary" %>
 	<%= link_to "Back", projects_path, class: "btn btn-danger" %>

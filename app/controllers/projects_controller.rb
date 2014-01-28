@@ -8,11 +8,10 @@ class ProjectsController < ApplicationController
     # @new_projects = Project.limit(3).order(created_at: :desc)
     @new_projects = Project.newest.limit_3
     @projects = Project.by_hit.all_but(@new_projects.collect(&:id))
-    @favourite_projects = Project.by_likes.limit_3
   end
 
   def show
-
+    @comment = Comment.new
     @project.hit_count += 1
     @project.save
   end
@@ -41,7 +40,7 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:title, :body)
+    params.require(:project).permit([:title, :body, {category_ids: []}])
   end
 
   def destroy

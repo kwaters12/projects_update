@@ -6,7 +6,7 @@ class DiscussionsController < ApplicationController
   end
 
   def show
-    @discussion = Discussion.find(params[:id])
+    @opinion = Opinion.new
     @discussion.hit_count += 1
     @discussion.save
   end

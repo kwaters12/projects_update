@@ -1,4 +1,5 @@
 class Discussion < ActiveRecord::Base
+  has_many :opinions, dependent: :destroy
 
   scope :recent, -> {order("created_at DESC")}
   scope :top_3_likes, -> {order("like_counter DESC").limit(3)}

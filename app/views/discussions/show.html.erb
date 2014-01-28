@@ -8,4 +8,26 @@
 <% else %>
 <%= link_to "Like", like_discussion_path(@discussion), class: "btn btn-primary" %>
 <% end %>
+<% if @opinion.errors.any? %>
+  <ul>
+    <% @opinion.errors.messages.values.each do |msg| %>
+    <li><%= msg.join " " %></li>
+    <% end %>
+  </ul>
+<% end %>
+<%= form_for [@discussion, @opinion] do |f| %>
+  <div class="form-group">
+    <%= f.label :body, "What's Your Opinion?:" %>
+    <br>
+    <%= f.text_area :body %>
+  </div>
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>
+
+<hr>
+<h2>Comments:</h2>
+<% @discussion.opinions.each do |opinion| %>
+  <%= opinion.body %>
+  <hr>
+<% end %>
 <%= link_to "All Discussions", discussions_path, class: "btn btn-primary" %>

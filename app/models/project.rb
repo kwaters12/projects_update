@@ -1,4 +1,8 @@
 class Project < ActiveRecord::Base
+  has_many :comments, dependent: :destroy
+  has_many :categorizations, dependent: :destroy
+  has_many :categories, through: :categorizations
+
   validates_presence_of :title, message: "You have to add a title" 
   validates :title, length: { minimum: 10, too_short: " must have at least 10 characters" }
   validates_presence_of :body, message: "There's nothing in the body of your project"
@@ -12,6 +16,10 @@ class Project < ActiveRecord::Base
   scope :all_but, lambda { |ids| where(["id NOT IN (?)", ids])}
   scope :top, lambda { |x|  order("like_counter DESC").limit(x)}
   scope :create_before, lambda { |x| created_at x}
+
+  before_save :capitalize
+  before_save :print_message
+  before_create :capitalize_title 
 
   # Write a method that returns a list of Question records 
   # that has a title size greater than 30 characters
@@ -50,6 +58,23 @@ class Project < ActiveRecord::Base
       new_hash[project.id] = project.title.length
     end
     new_hash
+  end
+
+  private
+
+  def capitalize
+    self.title.capitalize!
+    self.body.capitalize!
+  end 
+
+  def print_message
+    Rails.logger.info ">>>>>>>>>>>>>"
+    Rails.logger.info "Saved"
+    Rails.logger.info ">>>>>>>>>>>>>"
+  end
+
+  def capitalize_title
+    self.title.capitalize!
   end
 
 end

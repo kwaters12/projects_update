@@ -1,8 +1,9 @@
 @import 'bootstrap';
 
+#home {float: left; width: 66%;}
+.container {word-wrap: break-word; max-width: 1200px;}
 .alert_message {color: red;}
 .project_list {float: left;}
 .new_projects {float: right; width: 250px; background-color: #ddeded; 
-  padding-left: 10px; margin-top: 50px;}
-.favourite_projects {float: right; width: 250px; background-color: #e4ac33; 
-  padding-left: 10px; margin-top: 20px;}
+  padding-left: 10px; margin-top: 50px; word-wrap:break-word;}
+.button-float {float: right; width: 33%; margin-top: -40px;}

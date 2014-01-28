@@ -11,10 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140123062951) do
+ActiveRecord::Schema.define(version: 20140128001532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "categorizations", force: true do |t|
+    t.integer  "project_id"
+    t.integer  "category_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "categorizations", ["category_id"], name: "index_categorizations_on_category_id", using: :btree
+  add_index "categorizations", ["project_id"], name: "index_categorizations_on_project_id", using: :btree
+
+  create_table "comments", force: true do |t|
+    t.text     "body"
+    t.integer  "project_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["project_id"], name: "index_comments_on_project_id", using: :btree
 
   create_table "discussions", force: true do |t|
     t.string   "title"
@@ -25,6 +50,15 @@ ActiveRecord::Schema.define(version: 20140123062951) do
     t.integer  "hit_count",    default: 0
   end
 
+  create_table "opinions", force: true do |t|
+    t.text     "body"
+    t.integer  "discussion_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "opinions", ["discussion_id"], name: "index_opinions_on_discussion_id", using: :btree
+
   create_table "projects", force: true do |t|
     t.string   "title"
     t.text     "body"
@@ -32,6 +66,13 @@ ActiveRecord::Schema.define(version: 20140123062951) do
     t.datetime "updated_at"
     t.integer  "like_counter", default: 0
     t.integer  "hit_count",    default: 0
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
